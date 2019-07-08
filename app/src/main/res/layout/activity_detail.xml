@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailActivity">
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapse_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/collapsing"
+            app:contentScrim="@color/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/img_movie"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/image_content"
+                android:scaleType="fitXY"
+                app:layout_collapseMode="parallax" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#88000000" />
+
+            <ProgressBar
+                android:id="@+id/progress_circular"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:progress="0"
+                android:progressDrawable="@drawable/progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/container_star" />
+
+            <TextView
+                android:id="@+id/txt_percent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_marginTop="@dimen/vertical"
+                app:layout_collapseMode="pin" />
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        android:visibility="gone"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <TextView
+                android:id="@+id/txt_lang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal"
+                android:layout_marginLeft="@dimen/horizontal"
+                android:layout_marginTop="@dimen/vertical"
+                android:textAllCaps="true"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/container_star"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/vertical"
+                android:layout_marginEnd="@dimen/horizontal"
+                android:layout_marginRight="@dimen/horizontal"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal"
+                android:layout_marginLeft="@dimen/horizontal"
+                android:layout_marginTop="@dimen/vertical"
+                app:cardBackgroundColor="@color/colorPrimary"
+                app:cardCornerRadius="@dimen/card_corner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_lang">
+
+                <TextView
+                    android:id="@+id/txt_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_date_range_white_24dp"
+                    android:drawableLeft="@drawable/ic_date_range_white_24dp"
+                    android:drawablePadding="10dp"
+                    android:paddingLeft="@dimen/text_card_horizontal"
+                    android:paddingRight="@dimen/text_card_horizontal"
+                    android:text="@string/date"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_budget"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="@dimen/vertical"
+                app:cardBackgroundColor="@color/indigo"
+                app:cardCornerRadius="@dimen/card_corner"
+                app:layout_constraintStart_toEndOf="@+id/card_date"
+                app:layout_constraintTop_toBottomOf="@+id/txt_lang">
+
+                <TextView
+                    android:id="@+id/txt_budget"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_monetization_on_black_24dp"
+                    android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
+                    android:drawablePadding="10dp"
+                    android:paddingLeft="@dimen/text_card_horizontal"
+                    android:paddingRight="@dimen/text_card_horizontal"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginLeft="@dimen/horizontal"
+                android:layout_marginTop="@dimen/vertical"
+                android:layout_marginRight="@dimen/horizontal"
+                android:background="@color/text_color"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/card_date" />
+
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/horizontal"
+                android:layout_marginTop="@dimen/vertical"
+                android:layout_marginRight="@dimen/horizontal"
+                android:text="@string/overview"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view" />
+
+
+            <TextView
+                android:id="@+id/txt_overview"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/horizontal"
+                android:layout_marginTop="@dimen/vertical"
+                android:layout_marginRight="@dimen/horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerContainer"
+        android:layout_width="match_parent"
+        app:duration="800"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/shimmercontainer" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

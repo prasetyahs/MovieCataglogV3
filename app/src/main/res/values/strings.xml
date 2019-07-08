@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">MovieCataglogV3</string>
+    <string name="tab_layout">tab_layout</string>
+    <string name="image_content">image_content</string>
+    <string name="title">title</string>
+    <string name="date">date</string>
+    <string name="description">description</string>
+    <string name="language">language</string>
+    <string name="refresh">Refresh</string>
+    <string name="overview">Overview</string>
+    <string name="bahasa">Indonesia</string>
+    <string name="english">English</string>
+    <string-array name="list_tab_title">
+        <item>Movies</item>
+        <item>TV Movies</item>
+    </string-array>
+</resources>

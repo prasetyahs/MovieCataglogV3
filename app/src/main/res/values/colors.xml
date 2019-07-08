@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#9c27b0</color>
+    <color name="colorPrimaryDark">#6a0080</color>
+    <color name="colorAccent">#e040fb</color>
+    <color name="white">#fff</color>
+    <color name="unSelect">#A9D1D1D1</color>
+    <color name="text_color">#A3A3A3</color>
+    <color name="indigo">#4b0082</color>
+    <color name="shimmer_background">#dddddd</color>
+    <color name="transparent">#00FFFFFF</color>
+
+</resources>
