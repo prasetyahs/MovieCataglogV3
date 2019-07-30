@@ -4,26 +4,24 @@ package com.syncode.moviecataglogv3.fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.syncode.moviecataglogv3.R;
 import com.syncode.moviecataglogv3.adapter.RecycleMoviesAdapter;
-import com.syncode.moviecataglogv3.api.Constanta;
+import com.syncode.moviecataglogv3.remotdata.api.Constanta;
 import com.syncode.moviecataglogv3.model.Movies;
-import com.syncode.moviecataglogv3.repository.SharedPreference;
+import com.syncode.moviecataglogv3.localdata.SharedPreference;
 import com.syncode.moviecataglogv3.viewmodel.MoviesViewModel;
 
 import java.util.ArrayList;
@@ -36,10 +34,7 @@ public class MoviesTvFragment extends Fragment {
     private ProgressBar progressBar;
     private MoviesViewModel moviesViewModel;
 
-
-    public MoviesTvFragment() {
-
-    }
+    
 
     private SharedPreference sharedPreference;
 
@@ -53,13 +48,13 @@ public class MoviesTvFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         sharedPreference = new SharedPreference(this.getActivity());
-        moviesViewModel.setMovies("tv", sharedPreference.getReferences(), Constanta.API_KEY);
+        moviesViewModel.setMovies("tv", sharedPreference.getReferences("lang"), Constanta.API_KEY);
         moviesViewModel.getMovies().observe(this, getMovies);
         if (moviesViewModel.getMovies().getValue() == null) {
             moviesViewModel.getError().observe(this, getErrorMessage);
         }
         progressBar.setVisibility(View.VISIBLE);
-        lang = sharedPreference.getReferences();
+        lang = sharedPreference.getReferences("lang");
     }
 
 
@@ -70,13 +65,11 @@ public class MoviesTvFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
-            RecycleMoviesAdapter recycleMoviesAdapter = new RecycleMoviesAdapter(movies, getContext());
+            RecycleMoviesAdapter recycleMoviesAdapter = new RecycleMoviesAdapter(movies, getContext(),"TV");
             RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(lm);
             recyclerView.setAdapter(recycleMoviesAdapter);
             recycleMoviesAdapter.notifyDataSetChanged();
-
-
         }
     };
 
@@ -89,7 +82,7 @@ public class MoviesTvFragment extends Fragment {
                 builder.setPositiveButton(getResources().getString(R.string.refresh), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        moviesViewModel.setMovies("movie", new SharedPreference(MoviesTvFragment.this.getActivity()).getReferences(), Constanta.API_KEY);
+                        moviesViewModel.setMovies("tv", new SharedPreference(MoviesTvFragment.this.getActivity()).getReferences("lang"), Constanta.API_KEY);
                         moviesViewModel.getMovies().observe(MoviesTvFragment.this, getMovies);
                         progressBar.setVisibility(View.VISIBLE);
 
@@ -113,14 +106,14 @@ public class MoviesTvFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!lang.equals(sharedPreference.getReferences())) {
+        if (!lang.equals(sharedPreference.getReferences("lang"))) {
             recyclerView.setVisibility(View.GONE);
-            moviesViewModel.setMovies("tv", sharedPreference.getReferences(), Constanta.API_KEY);
+            moviesViewModel.setMovies("tv", sharedPreference.getReferences("lang"), Constanta.API_KEY);
             moviesViewModel.getMovies().observe(this, getMovies);
             if (moviesViewModel.getMovies().getValue() == null) {
                 moviesViewModel.getError().observe(this, getErrorMessage);
             }
-            lang = sharedPreference.getReferences();
+            lang = sharedPreference.getReferences("lang");
             progressBar.setVisibility(View.VISIBLE);
         }
     }

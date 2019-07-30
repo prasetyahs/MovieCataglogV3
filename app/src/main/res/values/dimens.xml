@@ -5,10 +5,6 @@
     <dimen name="horizontal">15dp</dimen>
     <dimen name="text">15sp</dimen>
     <dimen name="txt_title">20sp</dimen>
-    <dimen name="txt_title_detail">25sp</dimen>
-    <dimen name="overViewTextSize">17sp</dimen>
-    <dimen name="drawable_padding">10dp</dimen>
-    <dimen name="items_collapse">80dp</dimen>
     <dimen name="card_corner">3dp</dimen>
     <dimen name="text_card_horizontal">10dp</dimen>
     <dimen name="collapsing">350dp</dimen>

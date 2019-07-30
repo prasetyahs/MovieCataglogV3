@@ -10,11 +10,9 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
         app:elevation="0dp">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/collapse_toolbar"
             android:layout_width="match_parent"
             android:layout_height="@dimen/collapsing"
             app:contentScrim="@color/colorPrimary"
@@ -66,11 +64,8 @@
 
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:visibility="gone"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,11 +80,14 @@
                 android:layout_marginStart="@dimen/horizontal"
                 android:layout_marginLeft="@dimen/horizontal"
                 android:layout_marginTop="@dimen/vertical"
+                android:drawableStart="@drawable/ic_language_black_16dp"
                 android:textAllCaps="true"
+                android:drawablePadding="10dp"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/text"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:drawableLeft="@drawable/ic_date_range_white_24dp" />
 
             <LinearLayout
                 android:id="@+id/container_star"
@@ -130,34 +128,6 @@
                     android:textSize="@dimen/text" />
 
             </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_budget"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="@dimen/vertical"
-                app:cardBackgroundColor="@color/indigo"
-                app:cardCornerRadius="@dimen/card_corner"
-                app:layout_constraintStart_toEndOf="@+id/card_date"
-                app:layout_constraintTop_toBottomOf="@+id/txt_lang">
-
-                <TextView
-                    android:id="@+id/txt_budget"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawableStart="@drawable/ic_monetization_on_black_24dp"
-                    android:drawableLeft="@drawable/ic_monetization_on_black_24dp"
-                    android:drawablePadding="10dp"
-                    android:paddingLeft="@dimen/text_card_horizontal"
-                    android:paddingRight="@dimen/text_card_horizontal"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text" />
-
-            </androidx.cardview.widget.CardView>
-
 
             <View
                 android:id="@+id/view"
@@ -200,14 +170,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <com.facebook.shimmer.ShimmerFrameLayout
-        android:id="@+id/shimmerContainer"
-        android:layout_width="match_parent"
-        app:duration="800"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/shimmercontainer" />
-
-    </com.facebook.shimmer.ShimmerFrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

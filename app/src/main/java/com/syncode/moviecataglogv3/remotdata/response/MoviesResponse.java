@@ -1,4 +1,4 @@
-package com.syncode.moviecataglogv3.api.response;
+package com.syncode.moviecataglogv3.remotdata.response;
 
 import com.google.gson.annotations.SerializedName;
 import com.syncode.moviecataglogv3.model.Movies;

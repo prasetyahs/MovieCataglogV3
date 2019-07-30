@@ -1,12 +1,12 @@
-package com.syncode.moviecataglogv3.repository;
+package com.syncode.moviecataglogv3.remotdata;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.syncode.moviecataglogv3.api.ApiClient;
-import com.syncode.moviecataglogv3.api.ApiInterface;
-import com.syncode.moviecataglogv3.api.response.MoviesResponse;
+import com.syncode.moviecataglogv3.remotdata.api.ApiClient;
+import com.syncode.moviecataglogv3.remotdata.api.ApiInterface;
+import com.syncode.moviecataglogv3.remotdata.response.MoviesResponse;
 import com.syncode.moviecataglogv3.model.Movies;
 
 import java.util.ArrayList;
@@ -73,8 +73,7 @@ public class MoviesRepository {
                             responseMovie.getPosterPath(),
                             responseMovie.getLanguage(),
                             responseMovie.getReleaseDate(),
-                            responseMovie.getBackDropPath(),
-                            responseMovie.getBudget(), responseMovie.getRuntime(), responseMovie.getCredits(), responseMovie.getTitleOriginal(), responseMovie.getFirstDate());
+                            responseMovie.getBackDropPath(), responseMovie.getTitleOriginal(), responseMovie.getDateTv());
                     movie.postValue(itemsMovie);
                 }
             }

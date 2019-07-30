@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name" translatable="false">MovieCatalog</string>
+    <string name="image_content">image_content</string>
+    <string name="title">Judul</string>
+    <string name="date">Tanggal</string>
+    <string name="description">deskripsi</string>
+    <string name="language">Bahasa</string>
+    <string name="refresh">Muat Ulang</string>
+    <string name="overview">Sinopsis</string>
+    <string name="bahasa">Indonesia</string>
+    <string name="english">Inggris</string>
+    <string name="tab_movie">Film</string>
+    <string name="tab_tv">Film TV</string>
+    <string name="Favorite">Kesukaan</string>
+    <string name="add_favorite">Suka</string>
+    <string-array name="title_tab">
+        <item>Film Kesukaan</item>
+        <item>Film TV Kesukaan</item>
+    </string-array>
+</resources>

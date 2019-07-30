@@ -19,9 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.syncode.moviecataglogv3.R;
 import com.syncode.moviecataglogv3.adapter.RecycleMoviesAdapter;
-import com.syncode.moviecataglogv3.api.Constanta;
+import com.syncode.moviecataglogv3.remotdata.api.Constanta;
 import com.syncode.moviecataglogv3.model.Movies;
-import com.syncode.moviecataglogv3.repository.SharedPreference;
+import com.syncode.moviecataglogv3.localdata.SharedPreference;
 import com.syncode.moviecataglogv3.viewmodel.MoviesViewModel;
 
 import java.util.ArrayList;
@@ -50,15 +50,15 @@ public class MoviesFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         sharedPreference = new SharedPreference(this.getActivity());
-        moviesViewModel.setMovies("movie", sharedPreference.getReferences(), Constanta.API_KEY);
+        moviesViewModel.setMovies("movie", sharedPreference.getReferences("lang"), Constanta.API_KEY);
         moviesViewModel.getMovies().observe(this, getMovies);
         if (moviesViewModel.getMovies().getValue() == null) {
             moviesViewModel.getError().observe(this, getErrorMessage);
         }
-        lang = sharedPreference.getReferences();
+        lang = sharedPreference.getReferences("lang");
         progressBar.setVisibility(View.VISIBLE);
-
     }
+
 
     private Observer<ArrayList<Movies>> getMovies = new Observer<ArrayList<Movies>>() {
         @Override
@@ -67,13 +67,14 @@ public class MoviesFragment extends Fragment {
                 progressBar.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
             }
-            RecycleMoviesAdapter recycleMoviesAdapter = new RecycleMoviesAdapter(movies, getContext());
+            RecycleMoviesAdapter recycleMoviesAdapter = new RecycleMoviesAdapter(movies, getContext(),"Movie");
             RecyclerView.LayoutManager lm = new LinearLayoutManager(getContext());
             recyclerView.setLayoutManager(lm);
             recyclerView.setAdapter(recycleMoviesAdapter);
             recycleMoviesAdapter.notifyDataSetChanged();
         }
     };
+
 
     private Observer<String> getErrorMessage = new Observer<String>() {
         @Override
@@ -84,7 +85,7 @@ public class MoviesFragment extends Fragment {
                 builder.setPositiveButton(getResources().getString(R.string.refresh), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        moviesViewModel.setMovies("movie", new SharedPreference(MoviesFragment.this.getActivity()).getReferences(), Constanta.API_KEY);
+                        moviesViewModel.setMovies("movie", new SharedPreference(MoviesFragment.this.getActivity()).getReferences("lang"), Constanta.API_KEY);
                         moviesViewModel.getMovies().observe(MoviesFragment.this, getMovies);
                         progressBar.setVisibility(View.VISIBLE);
 
@@ -107,14 +108,14 @@ public class MoviesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!lang.equals(sharedPreference.getReferences())) {
+        if (!lang.equals(sharedPreference.getReferences("lang"))) {
             recyclerView.setVisibility(View.GONE);
-            moviesViewModel.setMovies("movie", sharedPreference.getReferences(), Constanta.API_KEY);
+            moviesViewModel.setMovies("movie", sharedPreference.getReferences("lang"), Constanta.API_KEY);
             moviesViewModel.getMovies().observe(this, getMovies);
             if (moviesViewModel.getMovies().getValue() == null) {
                 moviesViewModel.getError().observe(this, getErrorMessage);
             }
-            lang = sharedPreference.getReferences();
+            lang = sharedPreference.getReferences("lang");
             progressBar.setVisibility(View.VISIBLE);
         }
     }

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.syncode.moviecataglogv3.model.Movies;
-import com.syncode.moviecataglogv3.repository.MoviesRepository;
+import com.syncode.moviecataglogv3.remotdata.MoviesRepository;
 
 public class DetailViewModel extends ViewModel {
 

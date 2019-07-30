@@ -1,6 +1,6 @@
-package com.syncode.moviecataglogv3.api;
+package com.syncode.moviecataglogv3.remotdata.api;
 
-import com.syncode.moviecataglogv3.api.response.MoviesResponse;
+import com.syncode.moviecataglogv3.remotdata.response.MoviesResponse;
 import com.syncode.moviecataglogv3.model.Movies;
 
 import retrofit2.Call;

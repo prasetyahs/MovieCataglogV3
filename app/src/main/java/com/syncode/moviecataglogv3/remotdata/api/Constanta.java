@@ -1,4 +1,4 @@
-package com.syncode.moviecataglogv3.api;
+package com.syncode.moviecataglogv3.remotdata.api;
 
 public class Constanta {
     final static String BASE_URL = "https://api.themoviedb.org/";

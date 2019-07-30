@@ -6,7 +6,7 @@ import android.widget.RadioGroup;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.syncode.moviecataglogv3.repository.SharedPreference;
+import com.syncode.moviecataglogv3.localdata.SharedPreference;
 
 public class LanguageActivity extends AppCompatActivity {
     RadioGroup radioGroup;
@@ -21,7 +21,7 @@ public class LanguageActivity extends AppCompatActivity {
         }
         sharedPreference = new SharedPreference(this);
         radioGroup = findViewById(R.id.rb_group);
-        if (sharedPreference.getReferences().toLowerCase().trim().equals("id")) {
+        if (sharedPreference.getReferences("lang").toLowerCase().trim().equals("id")) {
             RadioButton rbBahasa = radioGroup.findViewById(R.id.rb_bahasa);
             rbBahasa.setChecked(true);
         } else {
@@ -34,10 +34,10 @@ public class LanguageActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
                 switch (i) {
                     case R.id.rb_bahasa:
-                        sharedPreference.setPref("id");
+                        sharedPreference.setPref("id", "id");
                         break;
                     case R.id.rb_english:
-                        sharedPreference.setPref("en-US");
+                        sharedPreference.setPref("en-US", "en");
                         break;
                 }
             }

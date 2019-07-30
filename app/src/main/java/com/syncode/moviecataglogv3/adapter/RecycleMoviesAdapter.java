@@ -26,10 +26,13 @@ public class RecycleMoviesAdapter extends RecyclerView.Adapter<RecycleMoviesAdap
     private final static String BASE_URL_POSTER = "https://image.tmdb.org/t/p/w342";
 
     private Context context;
+    private String type;
 
-    public RecycleMoviesAdapter(List<Movies> listMovies, Context context) {
+    public RecycleMoviesAdapter(List<Movies> listMovies, Context context, String type) {
         this.listMovies = listMovies;
         this.context = context;
+        this.type = type;
+
     }
 
     @NonNull
@@ -43,28 +46,23 @@ public class RecycleMoviesAdapter extends RecyclerView.Adapter<RecycleMoviesAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final Movies moviesModel = listMovies.get(position);
         holder.txtDesc.setText(moviesModel.getOverView());
-
-        final String category;
         if (moviesModel.getTitle() != null) {
             holder.txtTitle.setText(moviesModel.getTitle());
-            category = "tv";
         } else {
             holder.txtTitle.setText(moviesModel.getTitleOriginal());
-            category = "movie";
         }
-
         if (moviesModel.getReleaseDate() != null) {
             holder.txtDate.setText(moviesModel.getReleaseDate());
         } else {
-            holder.txtDate.setText(moviesModel.getFirstDate());
+            holder.txtDate.setText(moviesModel.getDateTv());
         }
         Glide.with(context).load(BASE_URL_POSTER + moviesModel.getPosterPath()).into(holder.imgMovie);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent goToDetail = new Intent(context, DetailActivity.class);
-                goToDetail.putExtra("id", moviesModel.getId());
-                goToDetail.putExtra("category", category);
+                goToDetail.putExtra("type", type);
+                goToDetail.putExtra("movies", moviesModel);
                 context.startActivity(goToDetail);
             }
         });

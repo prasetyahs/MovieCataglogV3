@@ -1,67 +1,110 @@
 package com.syncode.moviecataglogv3;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.FragmentManager;
 
-import com.google.android.material.tabs.TabLayout;
-import com.syncode.moviecataglogv3.adapter.ViewPagerAdapter;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.syncode.moviecataglogv3.fragment.FavoriteFragment;
 import com.syncode.moviecataglogv3.fragment.MoviesFragment;
 import com.syncode.moviecataglogv3.fragment.MoviesTvFragment;
-import com.syncode.moviecataglogv3.repository.SharedPreference;
+import com.syncode.moviecataglogv3.localdata.SharedPreference;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    ViewPagerAdapter viewPagerAdapter;
+    private SharedPreference sharedPreference;
+    FrameLayout containerFragment;
+    BottomNavigationView bottomNavigationView;
 
-    private String[] title;
+    private String lang;
+
+    final Fragment fragMovie = new MoviesFragment();
+    final Fragment fragmentMovieTv = new MoviesTvFragment();
+    final Fragment fragmentFavorite = new FavoriteFragment();
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = fragMovie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreference = new SharedPreference(this);
+        setLanguage(sharedPreference.getReferences("lang2"));
         setContentView(R.layout.activity_main);
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setElevation(0);
         }
-        setResource();
-        if (title.length > 0 && setFragment().size() > 0) {
-            viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), setFragment(), setTitle());
-            viewPager.setAdapter(viewPagerAdapter);
-            tabLayout.setupWithViewPager(viewPager);
+        containerFragment = findViewById(R.id.container);
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        lang = sharedPreference.getReferences("lang2");
+        if (sharedPreference.getReferences("lang").isEmpty() && sharedPreference.getReferences("lang2").isEmpty()) {
+            sharedPreference.setPref("en-US", "en");
         }
-        SharedPreference sharedPreference = new SharedPreference(this);
-        if(sharedPreference.getReferences().isEmpty()){
-            sharedPreference.setPref("en-US");
+        if (savedInstanceState != null) {
+            switch (savedInstanceState.getInt("fragState")) {
+                case R.id.tabMovie:
+                    active = fragMovie;
+                    fm.beginTransaction().add(R.id.container, fragmentFavorite, fragmentFavorite.getClass().getSimpleName()).hide(fragmentFavorite).commit();
+                    fm.beginTransaction().add(R.id.container, fragmentMovieTv, fragmentMovieTv.getClass().getSimpleName()).hide(fragmentMovieTv).commit();
+                    break;
+                case R.id.tabTv:
+                    active = fragmentMovieTv;
+                    fm.beginTransaction().add(R.id.container, fragMovie, fragMovie.getClass().getSimpleName()).hide(fragMovie).commit();
+                    fm.beginTransaction().add(R.id.container, fragmentFavorite, fragmentFavorite.getClass().getSimpleName()).hide(fragmentFavorite).commit();
+                    break;
+                case R.id.favorite:
+                    active = fragmentFavorite;
+                    fm.beginTransaction().add(R.id.container, fragMovie, fragMovie.getClass().getSimpleName()).hide(fragMovie).commit();
+                    fm.beginTransaction().add(R.id.container, fragmentMovieTv, fragmentMovieTv.getClass().getSimpleName()).hide(fragmentMovieTv).commit();
+                    break;
+            }
+            fm.beginTransaction().add(R.id.container, active, active.getClass().getSimpleName()).commit();
+        }else{
+            fm.beginTransaction().add(R.id.container, fragmentFavorite, fragmentFavorite.getClass().getSimpleName()).hide(fragmentFavorite).commit();
+            fm.beginTransaction().add(R.id.container, fragmentMovieTv, fragmentMovieTv.getClass().getSimpleName()).hide(fragmentMovieTv).commit();
+            fm.beginTransaction().add(R.id.container, fragMovie, fragMovie.getClass().getSimpleName()).commit();
         }
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.tabMovie:
+                        fm.beginTransaction().hide(active).show(fragMovie).commit();
+                        active = fragMovie;
+                        return true;
+                    case R.id.tabTv:
+                        fm.beginTransaction().hide(active).show(fragmentMovieTv).commit();
+                        active = fragmentMovieTv;
+                        return true;
+                    case R.id.favorite:
+                        fm.beginTransaction().hide(active).show(fragmentFavorite).commit();
+                        active = fragmentFavorite;
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
     }
 
-    private List<String> setTitle() {
-        return new ArrayList<>(Arrays.asList(title));
-    }
-
-    private void setResource() {
-        title = getResources().getStringArray(R.array.list_tab_title);
-    }
-
-    private List<Fragment> setFragment() {
-        List<Fragment> listFrag = new ArrayList<>();
-        listFrag.add(new MoviesFragment());
-        listFrag.add(new MoviesTvFragment());
-        return listFrag;
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("fragState", bottomNavigationView.getSelectedItemId());
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -74,9 +117,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (!lang.equals(sharedPreference.getReferences("lang2"))) {
+            for (Fragment fragment : fm.getFragments()) {
+                fm.beginTransaction().remove(fragment).commit();
+            }
+            recreate();
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.options_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+
+    public void setLanguage(String language) {
+        Locale locale = new Locale(language);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration configuration = res.getConfiguration();
+        configuration.locale = locale;
+        res.updateConfiguration(configuration, dm);
     }
 }

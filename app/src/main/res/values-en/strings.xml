@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MovieCataglogV3</string>
+    <string name="app_name" translatable="false">MovieCatalog</string>
     <string name="image_content">image_content</string>
     <string name="title">title</string>
     <string name="date">date</string>
