@@ -1,13 +1,16 @@
 package com.syncode.moviecataglogv3.remotdata;
 
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.syncode.moviecataglogv3.model.Movies;
+import com.syncode.moviecataglogv3.reminder.Alarm;
 import com.syncode.moviecataglogv3.remotdata.api.ApiClient;
 import com.syncode.moviecataglogv3.remotdata.api.ApiInterface;
 import com.syncode.moviecataglogv3.remotdata.response.MoviesResponse;
-import com.syncode.moviecataglogv3.model.Movies;
 
 import java.util.ArrayList;
 
@@ -22,11 +25,34 @@ public class MoviesRepository {
     private String message;
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
     private MutableLiveData<ArrayList<Movies>> data = new MutableLiveData<>();
-    private MutableLiveData<Movies> movie = new MutableLiveData<>();
+    private ArrayList<Movies> dataRelease = new ArrayList<>();
 
     public MoviesRepository() {
         apiInterface = ApiClient.getClient().create(ApiInterface.class);
     }
+
+    public LiveData<ArrayList<Movies>> searchMovies(String category, String lang, String apiKey, String query) {
+        Call<MoviesResponse> responseSearch = apiInterface.searchMovies(category, apiKey, lang, query);
+        responseSearch.enqueue(new Callback<MoviesResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
+                if (response.body() != null) {
+                    data.postValue(response.body().getMoviesList());
+                } else {
+                    message = "Data Not Found";
+                    errorMessage.setValue(message);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<MoviesResponse> call, @NonNull Throwable t) {
+                message = "No Internet";
+                errorMessage.setValue(message);
+            }
+        });
+        return data;
+    }
+
 
     public LiveData<ArrayList<Movies>> requestListMovie(String category, String lang, String apiKey) {
         final Call<MoviesResponse> moviesResponseCall = apiInterface.getMovies(category, apiKey, lang);
@@ -51,38 +77,31 @@ public class MoviesRepository {
         return data;
     }
 
-
     public LiveData<String> errorRespon() {
         return errorMessage;
     }
 
-    public LiveData<Movies> requestSingleMovie(int id, String lang, String apiKey, String category) {
-        Call<Movies> moviesCall = apiInterface.getSingleMovie(category, id, apiKey, lang);
-        moviesCall.enqueue(new Callback<Movies>() {
+    public void requestReleaseMovie(String apiKey, String gte, String lte, Context context) {
+        Call<MoviesResponse> moviesResponseCall = apiInterface.releaseMovies(apiKey, gte, lte);
+        moviesResponseCall.enqueue(new Callback<MoviesResponse>() {
             @Override
-            public void onResponse(@NonNull Call<Movies> call, @NonNull Response<Movies> response) {
-                Movies responseMovie = response.body();
-                if (responseMovie != null) {
-                    Movies itemsMovie = new Movies(
-                            responseMovie.getId(),
-                            responseMovie.getVoteCount(),
-                            responseMovie.getOverView(),
-                            responseMovie.getVoteAverage(),
-                            responseMovie.getTitle(),
-                            responseMovie.getPopularity(),
-                            responseMovie.getPosterPath(),
-                            responseMovie.getLanguage(),
-                            responseMovie.getReleaseDate(),
-                            responseMovie.getBackDropPath(), responseMovie.getTitleOriginal(), responseMovie.getDateTv());
-                    movie.postValue(itemsMovie);
+            public void onResponse(@NonNull Call<MoviesResponse> call, @NonNull Response<MoviesResponse> response) {
+                if (response.body() != null) {
+                    for (Movies movies : response.body().getMoviesList()) {
+                        Alarm.showNotification(movies.getTitleOriginal(), context, movies.getTitleOriginal()+" Release Today !", movies.getId(), String.valueOf(movies.getId()), String.valueOf(movies.getId()),5);
+                    }
+
+                } else {
+                    message = "Not Release";
+                    errorMessage.setValue(message);
                 }
             }
 
             @Override
-            public void onFailure(@NonNull Call<Movies> call, @NonNull Throwable t) {
-
+            public void onFailure(@NonNull Call<MoviesResponse> call, @NonNull Throwable t) {
+                message = "No Internet";
+                errorMessage.setValue(message);
             }
         });
-        return movie;
     }
 }

@@ -12,12 +12,13 @@ public class SharedPreference {
     private SharedPreferences sharedPreferences;
 
     private final static String KEY_LANGUAGE = "language";
+    private final static String ALARM = "alarm";
 
     public SharedPreference(Activity activity) {
         this.activity = activity;
     }
 
-    public void setPref(String LANGUAGE, String lang2) {
+    public void setPrefLang(String LANGUAGE, String lang2) {
         sharedPreferences = activity.getSharedPreferences(KEY_LANGUAGE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("lang", LANGUAGE);
@@ -25,8 +26,29 @@ public class SharedPreference {
         editor.apply();
     }
 
-    public String getReferences(String lang) {
+    public String getReferencesLang(String lang) {
         sharedPreferences = activity.getSharedPreferences(KEY_LANGUAGE, Context.MODE_PRIVATE);
         return sharedPreferences.getString(lang, "");
+    }
+
+
+    public void setPrefAlarmDaily(boolean dailySwitch) {
+        sharedPreferences = activity.getSharedPreferences(ALARM, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("daily", dailySwitch);
+        editor.apply();
+    }
+
+    public void setPrefAlarmRelease(boolean dailySwitch) {
+        sharedPreferences = activity.getSharedPreferences(ALARM, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("release", dailySwitch);
+        editor.apply();
+    }
+
+
+    public boolean getAlarmRelease(String key) {
+        sharedPreferences = activity.getSharedPreferences(ALARM, Context.MODE_PRIVATE);
+        return sharedPreferences.getBoolean(key, false);
     }
 }

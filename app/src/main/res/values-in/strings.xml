@@ -13,6 +13,12 @@
     <string name="tab_tv">Film TV</string>
     <string name="Favorite">Kesukaan</string>
     <string name="add_favorite">Suka</string>
+    <string name="search">Telusuri</string>
+    <string name="des1">Mengaktifkan Pengingat Film Release Hari ini</string>
+    <string name="des2">Pengingat Harian</string>
+    <string name="release_reminder">Pengingat Harian</string>
+    <string name="reminder_for_return_to_app">Pengingat untuk harian</string>
+    <string name="message1">Catalog Movie Merindukanmu</string>
     <string-array name="title_tab">
         <item>Film Kesukaan</item>
         <item>Film TV Kesukaan</item>

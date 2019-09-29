@@ -9,9 +9,9 @@ import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.SerializedName;
 
-@Entity(tableName = "tb_movie")
+@Entity(tableName = Movies.TABLE_NAME)
 public class Movies implements Parcelable {
-
+    static final String TABLE_NAME = "tb_movie";
     @PrimaryKey()
     @ColumnInfo(name = "id")
     @SerializedName("id")

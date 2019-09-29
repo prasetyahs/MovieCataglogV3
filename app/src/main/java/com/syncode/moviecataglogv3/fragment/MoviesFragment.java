@@ -2,7 +2,6 @@ package com.syncode.moviecataglogv3.fragment;
 
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.syncode.moviecataglogv3.R;
 import com.syncode.moviecataglogv3.adapter.RecycleMoviesAdapter;
-import com.syncode.moviecataglogv3.remotdata.api.Constanta;
-import com.syncode.moviecataglogv3.model.Movies;
 import com.syncode.moviecataglogv3.localdata.SharedPreference;
+import com.syncode.moviecataglogv3.model.Movies;
+import com.syncode.moviecataglogv3.remotdata.api.Constanta;
 import com.syncode.moviecataglogv3.viewmodel.MoviesViewModel;
 
 import java.util.ArrayList;
@@ -50,12 +49,12 @@ public class MoviesFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         sharedPreference = new SharedPreference(this.getActivity());
-        moviesViewModel.setMovies("movie", sharedPreference.getReferences("lang"), Constanta.API_KEY);
+        moviesViewModel.setMovies("movie", sharedPreference.getReferencesLang("lang"), Constanta.API_KEY);
         moviesViewModel.getMovies().observe(this, getMovies);
         if (moviesViewModel.getMovies().getValue() == null) {
             moviesViewModel.getError().observe(this, getErrorMessage);
         }
-        lang = sharedPreference.getReferences("lang");
+        lang = sharedPreference.getReferencesLang("lang");
         progressBar.setVisibility(View.VISIBLE);
     }
 
@@ -82,14 +81,11 @@ public class MoviesFragment extends Fragment {
             if (message != null) {
                 progressBar.setVisibility(View.GONE);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setPositiveButton(getResources().getString(R.string.refresh), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        moviesViewModel.setMovies("movie", new SharedPreference(MoviesFragment.this.getActivity()).getReferences("lang"), Constanta.API_KEY);
-                        moviesViewModel.getMovies().observe(MoviesFragment.this, getMovies);
-                        progressBar.setVisibility(View.VISIBLE);
+                builder.setPositiveButton(getResources().getString(R.string.refresh), (dialogInterface, i) -> {
+                    moviesViewModel.setMovies("movie", sharedPreference.getReferencesLang("lang"), Constanta.API_KEY);
+                    moviesViewModel.getMovies().observe(MoviesFragment.this, getMovies);
+                    progressBar.setVisibility(View.VISIBLE);
 
-                    }
                 });
                 builder.setCancelable(false);
                 builder.setTitle(message);
@@ -108,14 +104,14 @@ public class MoviesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!lang.equals(sharedPreference.getReferences("lang"))) {
+        if (!lang.equals(sharedPreference.getReferencesLang("lang"))) {
             recyclerView.setVisibility(View.GONE);
-            moviesViewModel.setMovies("movie", sharedPreference.getReferences("lang"), Constanta.API_KEY);
+            moviesViewModel.setMovies("movie", sharedPreference.getReferencesLang("lang"), Constanta.API_KEY);
             moviesViewModel.getMovies().observe(this, getMovies);
             if (moviesViewModel.getMovies().getValue() == null) {
                 moviesViewModel.getError().observe(this, getErrorMessage);
             }
-            lang = sharedPreference.getReferences("lang");
+            lang = sharedPreference.getReferencesLang("lang");
             progressBar.setVisibility(View.VISIBLE);
         }
     }

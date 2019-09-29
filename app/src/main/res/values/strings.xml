@@ -13,8 +13,16 @@
     <string name="tab_tv">TV Movies</string>
     <string name="Favorite">Favorite</string>
     <string name="add_favorite">Favorite</string>
+    <string name="search">Search</string>
+    <string name="des1">Reminder showing the movie that released today</string>
+    <string name="des2">Daily Reminder</string>
+    <string name="release_reminder">Release Reminder</string>
+    <string name="reminder_for_return_to_app">Reminder for return to app</string>
+    <string name="message1">Catalog Movie Missing You</string>
+    <string name="favorite_movie">Favorite Movie</string>
     <string-array name="title_tab">
         <item>Movie Favorite</item>
         <item>Movie TV Favorite</item>
     </string-array>
+
 </resources>

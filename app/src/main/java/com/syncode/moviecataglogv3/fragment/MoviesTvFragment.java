@@ -34,7 +34,7 @@ public class MoviesTvFragment extends Fragment {
     private ProgressBar progressBar;
     private MoviesViewModel moviesViewModel;
 
-    
+
 
     private SharedPreference sharedPreference;
 
@@ -48,13 +48,13 @@ public class MoviesTvFragment extends Fragment {
         progressBar = view.findViewById(R.id.progressBar);
         moviesViewModel = ViewModelProviders.of(this).get(MoviesViewModel.class);
         sharedPreference = new SharedPreference(this.getActivity());
-        moviesViewModel.setMovies("tv", sharedPreference.getReferences("lang"), Constanta.API_KEY);
+        moviesViewModel.setMovies("tv", sharedPreference.getReferencesLang("lang"), Constanta.API_KEY);
         moviesViewModel.getMovies().observe(this, getMovies);
         if (moviesViewModel.getMovies().getValue() == null) {
             moviesViewModel.getError().observe(this, getErrorMessage);
         }
         progressBar.setVisibility(View.VISIBLE);
-        lang = sharedPreference.getReferences("lang");
+        lang = sharedPreference.getReferencesLang("lang");
     }
 
 
@@ -82,7 +82,7 @@ public class MoviesTvFragment extends Fragment {
                 builder.setPositiveButton(getResources().getString(R.string.refresh), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        moviesViewModel.setMovies("tv", new SharedPreference(MoviesTvFragment.this.getActivity()).getReferences("lang"), Constanta.API_KEY);
+                        moviesViewModel.setMovies("tv", new SharedPreference(MoviesTvFragment.this.getActivity()).getReferencesLang("lang"), Constanta.API_KEY);
                         moviesViewModel.getMovies().observe(MoviesTvFragment.this, getMovies);
                         progressBar.setVisibility(View.VISIBLE);
 
@@ -106,14 +106,14 @@ public class MoviesTvFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (!lang.equals(sharedPreference.getReferences("lang"))) {
+        if (!lang.equals(sharedPreference.getReferencesLang("lang"))) {
             recyclerView.setVisibility(View.GONE);
-            moviesViewModel.setMovies("tv", sharedPreference.getReferences("lang"), Constanta.API_KEY);
+            moviesViewModel.setMovies("tv", sharedPreference.getReferencesLang("lang"), Constanta.API_KEY);
             moviesViewModel.getMovies().observe(this, getMovies);
             if (moviesViewModel.getMovies().getValue() == null) {
                 moviesViewModel.getError().observe(this, getErrorMessage);
             }
-            lang = sharedPreference.getReferences("lang");
+            lang = sharedPreference.getReferencesLang("lang");
             progressBar.setVisibility(View.VISIBLE);
         }
     }

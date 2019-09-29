@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.syncode.moviecataglogv3.DetailActivity;
 import com.syncode.moviecataglogv3.R;
 import com.syncode.moviecataglogv3.model.Movies;
+import com.syncode.moviecataglogv3.remotdata.api.Constanta;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class RecycleMoviesAdapter extends RecyclerView.Adapter<RecycleMoviesAdap
 
     private List<Movies> listMovies;
 
-    private final static String BASE_URL_POSTER = "https://image.tmdb.org/t/p/w342";
+
 
     private Context context;
     private String type;
@@ -56,15 +57,12 @@ public class RecycleMoviesAdapter extends RecyclerView.Adapter<RecycleMoviesAdap
         } else {
             holder.txtDate.setText(moviesModel.getDateTv());
         }
-        Glide.with(context).load(BASE_URL_POSTER + moviesModel.getPosterPath()).into(holder.imgMovie);
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent goToDetail = new Intent(context, DetailActivity.class);
-                goToDetail.putExtra("type", type);
-                goToDetail.putExtra("movies", moviesModel);
-                context.startActivity(goToDetail);
-            }
+        Glide.with(context).load(Constanta.BASE_URL_POSTER + moviesModel.getPosterPath()).into(holder.imgMovie);
+        holder.cardView.setOnClickListener(view -> {
+            Intent goToDetail = new Intent(context, DetailActivity.class);
+            goToDetail.putExtra("type", type);
+            goToDetail.putExtra("movies", moviesModel);
+            context.startActivity(goToDetail);
         });
     }
 

@@ -1,6 +1,7 @@
 package com.syncode.moviecataglogv3;
 
 import android.animation.ObjectAnimator;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,31 +15,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
 import com.syncode.moviecataglogv3.localdata.AsyncOperation;
 import com.syncode.moviecataglogv3.localdata.AsyncTaskLocalData;
 import com.syncode.moviecataglogv3.localdata.MovieDatabase;
-import com.syncode.moviecataglogv3.localdata.SharedPreference;
 import com.syncode.moviecataglogv3.model.Movies;
 import com.syncode.moviecataglogv3.remotdata.api.Constanta;
-import com.syncode.moviecataglogv3.viewmodel.DetailViewModel;
 
 public class DetailActivity extends AppCompatActivity implements AsyncTaskLocalData {
-    Toolbar toolbar;
-    LinearLayout containerStar;
-    ProgressBar progress;
-    TextView txtLang, txtDate, txtPercent, txtOverview;
-    ImageView imgMovie;
-    SharedPreference sharedPreference;
-    DetailViewModel detailViewModel;
 
     private MovieDatabase dbMovie;
     private Movies movies;
     private MenuItem itemFavorite;
     private String[] params;
+    private static final int LOADER_MENU = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,19 +38,16 @@ public class DetailActivity extends AppCompatActivity implements AsyncTaskLocalD
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_detail);
         dbMovie = Room.databaseBuilder(this.getApplicationContext(), MovieDatabase.class, "MovieDb").build();
-        imgMovie = findViewById(R.id.img_movie);
-        txtLang = findViewById(R.id.txt_lang);
-        txtDate = findViewById(R.id.txt_date);
-        progress = findViewById(R.id.progress_circular);
-        txtPercent = findViewById(R.id.txt_percent);
-        containerStar = findViewById(R.id.container_star);
-        txtOverview = findViewById(R.id.txt_overview);
-        detailViewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-        toolbar = findViewById(R.id.toolbar);
-        sharedPreference = new SharedPreference(this);
+        ImageView imgMovie = findViewById(R.id.img_movie);
+        TextView txtLang = findViewById(R.id.txt_lang);
+        TextView txtDate = findViewById(R.id.txt_date);
+        ProgressBar progress = findViewById(R.id.progress_circular);
+        TextView txtPercent = findViewById(R.id.txt_percent);
+        LinearLayout containerStar = findViewById(R.id.container_star);
+        TextView txtOverview = findViewById(R.id.txt_overview);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         movies = getIntent().getParcelableExtra("movies");
         String type = getIntent().getStringExtra("type");
-        System.out.println(type);
         movies.setType(type);
         if (movies != null) {
             txtLang.setText(movies.getLanguage());
@@ -143,8 +132,12 @@ public class DetailActivity extends AppCompatActivity implements AsyncTaskLocalD
     public void onPostExecute(Movies[] movies) {
         if (movies != null) {
             if (movies.length > 0) {
-                itemFavorite.setIcon(getResources().getDrawable(R.drawable.ic_favorite_red_24dp));
-                itemFavorite.setChecked(true);
+                Drawable icon = getResources().getDrawable(R.drawable.ic_favorite_red_24dp);
+                if (icon != null) {
+                    itemFavorite.setIcon(icon);
+                    itemFavorite.setChecked(true);
+                }
+
             }
         }
     }
